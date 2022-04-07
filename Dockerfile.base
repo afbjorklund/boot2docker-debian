@@ -8,7 +8,7 @@ RUN apt-get update \
 		ca-certificates \
 		ifupdown \
 		isc-dhcp-client \
-		linux-image-3.16.0-4-amd64 \
+		linux-image-3.16.0-11-amd64 \
 		ntp \
 		openssh-server \
 		rsync \
