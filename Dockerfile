@@ -10,8 +10,6 @@ RUN apt-get update \
 		bash-completion \
 		busybox \
 		ca-certificates \
-		ifupdown \
-		isc-dhcp-client \
 		linux-image-generic \
 		ntp \
 		openssh-server \
@@ -44,13 +42,15 @@ RUN set -e \
 RUN echo -n > /etc/machine-id
 
 # setup networking (hack hack hack)
-# TODO find a better way to do this natively via some eth@.service magic (like the getty magic) and remove ifupdown completely
+RUN systemctl enable systemd-networkd
 RUN for iface in eth0 eth1 eth2 eth3; do \
 		{ \
-			echo "auto $iface"; \
-			echo "allow-hotplug $iface"; \
-			echo "iface $iface inet dhcp"; \
-		} > /etc/network/interfaces.d/$iface; \
+			echo "[Match]"; \
+			echo "Name=$iface"; \
+			echo; \
+			echo "[Network]"; \
+			echo "DHCP=yes"; \
+		} > /etc/systemd/network/80-$iface.network; \
 	done
 
 # COLOR PROMPT BABY
