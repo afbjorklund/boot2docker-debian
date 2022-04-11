@@ -11,7 +11,7 @@ RUN apt-get update \
 		busybox \
 		ca-certificates \
 		linux-image-generic \
-		ntp \
+		systemd-timesyncd \
 		openssh-server \
 		rsync \
 		sudo \
@@ -80,7 +80,7 @@ RUN mkdir -p /etc/systemd/system/serial-getty@.service.d && { \
 
 
 # setup NTP to use the boot2docker vendor pool instead of Debian's
-RUN sed -i 's/debian.pool.ntp.org/boot2docker.pool.ntp.org/g' /etc/ntp.conf
+RUN systemctl enable systemd-timesyncd
 RUN echo 'NTP=boot2docker.pool.ntp.org' >> /etc/systemd/timesyncd.conf
 
 # set a default LANG (sshd reads from here)
